@@ -38,8 +38,14 @@ from tensorflow import keras
 
 # Helper libraries
 import numpy as np
+from datetime import datetime
 
 print(tf.__version__)
+
+
+# Create the Keras Tensorboard writer
+logdir = "graphs/" + datetime.now().strftime("%Y%m%d-%H%M%S")
+tensorboard_callback = keras.callbacks.TensorBoard(log_dir=logdir)
 
 # Load the fashion MNIST dataset
 fashion_mnist = keras.datasets.fashion_mnist
@@ -67,7 +73,7 @@ model.compile(optimizer='adam',
               metrics=['accuracy'])
 
 # Fit the data to the model (training)
-model.fit(train_images, train_labels, epochs=10)
+model.fit(train_images, train_labels, epochs=10, callbacks=[tensorboard_callback])
 
 # Evaluate on the test data (inference)
 test_loss, test_acc = model.evaluate(test_images,  test_labels, verbose=2)

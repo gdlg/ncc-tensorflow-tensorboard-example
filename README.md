@@ -1,6 +1,8 @@
-# Durham NCC TensorFlow example
+# Durham NCC TensorFlow example using TensorBoard
 
 This example is based on https://www.tensorflow.org/tutorials/keras/classification and has been adapted to work on NCC.
+
+This example show how to use a separate web server such as TensorBoard to visualise information about the training of your neural network.
 
 ## Creating a virtual environment and installing
 
@@ -15,6 +17,18 @@ Note that every time that you would like to work on this project, you must sourc
 ```
 source env/bin/activate
 ```
+
+## Starting the TensorBoard server
+
+TensorBoard is based on a web server which you must start beforehand. The server should be running as long as you need (both while you are running your job and after when you are analysing your data). Therefore it doesn’t make sense to start it inside your job because it will be destroyed as soon as the job finishes. Therefore the server should running on the head node for as long as you need it. It is good idea to leave the server running inside a tmux to keep the server running even when you disconnect from NCC.
+
+Start the server with the following:
+```
+export TMPDIR=/tmp/$USER; mkdir -p $TMPDIR; tensorboard --logdir graphs --port 9304
+```
+Replace PORT with a random port of your choice. Do *not* use the default port of TensorBoard because it is most likely already used by someone else, besides you wouldn’t want anyone else to mess up with your plots by mistake.
+
+Once the server is started, you can connect to it in your web browser at the address: `http://ncc1.clients.dur.ac.uk:PORT`.
 
 ## Configuring your SLURM jobs
 
